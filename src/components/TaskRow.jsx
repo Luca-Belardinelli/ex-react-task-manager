@@ -1,3 +1,5 @@
+// Importo NavLink da react-router-dom per la navigazione
+import { NavLink } from "react-router-dom";
 
 import React from "react";
 
@@ -9,7 +11,11 @@ function TaskRow({ task }) {
     return (
         <>
             <tr>
-                <td>{task.title} </td>
+                <td >
+                    <NavLink to={`/task/${task.id}`}>
+                        {task.title}
+                    </NavLink>
+                </td>
                 <td className={`${isToDo ? "red" : isDoing ? "yellow" : "green"}`}>{task.status} </td>
                 <td>{new Date(task.createdAt).toLocaleDateString()} </td>
             </tr>
