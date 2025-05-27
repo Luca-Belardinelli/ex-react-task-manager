@@ -89,3 +89,52 @@ tr:hover {
 .green {
     background-color: green;
 }
+
+
+/* form styles */
+.form-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.form-section {
+    margin-bottom: 1.5rem;
+}
+
+.form-section p {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.form-section input,
+.form-section select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.submit-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+}
