@@ -139,6 +139,39 @@ tr:hover {
     background-color: #45a049;
 }
 
+/* pagina di dettaglio task */
+.task-detail {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.task-detail h3 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.task-detail p {
+    margin: 10px 0;
+    padding: 8px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
+
+.task-detail button {
+    margin-top: 20px;
+    padding: 8px 16px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.task-detail button:hover {
+    background-color: #c82333;
+}
+
 /* modale */
 .modal-backdrop {
     position: fixed;

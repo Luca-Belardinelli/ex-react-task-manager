@@ -36,7 +36,7 @@ function TaskDetail() {
     }
 
     return (
-        <>
+        <div className="task-detail">
             <h3>Dettagli Task</h3>
             <p> Nome : {task.title}</p>
             <p> Descrizione : {task.description}</p>
@@ -56,7 +56,7 @@ function TaskDetail() {
                 onConfirm={handleDelete}
                 confirmText="Elimina"
             />
-        </>
+        </div>
     )
 }
 

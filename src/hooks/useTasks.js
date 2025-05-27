@@ -60,8 +60,20 @@ export default function useTasks() {
         setTasks(prev => prev.filter(task => task.id !== taskId))
     };
 
-    const updateTask = () => {
-        // da implementare
+    const updateTask = async () => {
+        const response = await fetch(`${api}/tasks/${updateTask.id}`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ /* dati del task da aggiornare */ })
+        });
+
+        const { success, message, task: newTask } = await response.json();
+        if (!success) throw new Error(message)
+        // Aggiorno il task nello stato
+        setTasks(prev => prev.map(oldTask => oldTask.id === newTask.id ? newTask : oldTask));
+
     };
 
     return { tasks, addTask, removeTask, updateTask }
