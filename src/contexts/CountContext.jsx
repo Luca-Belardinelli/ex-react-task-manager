@@ -32,8 +32,8 @@ export const GlobalProvider = ({ children }) => {
 
     // Fornisco il contesto con i valori necessari ai componenti figli
     return (
-        <GlobalContext value={{ setTasks, tasks }}>
+        <GlobalContext.Provider value={{ setTasks, tasks }}>
             {children}
-        </GlobalContext>
+        </GlobalContext.Provider>
     )
 }
