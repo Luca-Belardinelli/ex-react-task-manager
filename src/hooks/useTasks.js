@@ -30,6 +30,7 @@ export default function useTasks() {
     // Funzioni placeholder
     const addTask = async (newTask) => {
         const response = await fetch(`${api}/tasks`, {
+            //oggetto di configurazione
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

@@ -41,7 +41,7 @@ function TaskDetail() {
             <p> Nome : {task.title}</p>
             <p> Descrizione : {task.description}</p>
             <p> Stato : {task.status}</p>
-            <p> Data di creazione : {task.createdAt}</p>
+            <p> Data di creazione : {new Date(task.createdAt).toLocaleDateString()}</p>
 
             <button onClick={() => setShowModal(true)}>
                 Elimina task
