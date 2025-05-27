@@ -27,8 +27,22 @@ export default function useTasks() {
 
 
     // Funzioni placeholder
-    const addTask = () => {
-        // da implementare
+    const addTask = async (newTask) => {
+        const response = await fetch(`${api}/tasks`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newTask)
+        });
+
+        const { success, message, task } = await response.json();
+        console.log(response, message, success)
+
+        if (!success) throw new Error(message)
+
+        setTasks(prev => [...prev, task])
+
     };
 
     const removeTask = () => {

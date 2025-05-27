@@ -1,5 +1,12 @@
 import { useState, useRef, useMemo } from "react";
 
+
+import { GlobalContext } from "../contexts/CountContext";
+
+import { useContext } from "react";
+
+
+
 // Costanti per la validazione dei campi
 const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~";
 
@@ -12,6 +19,7 @@ function AddTask() {
     const description = useRef();
     const status = useRef();
 
+    const { addTask } = useContext(GlobalContext)
 
     // validazione titolo
     const notValidTitle = useMemo(() => {
@@ -27,7 +35,7 @@ function AddTask() {
 
 
     // funzione che gestisce l'invio del form
-    const handleSubmit = e => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (notValidTitle) return
         const newTask = {
@@ -35,7 +43,17 @@ function AddTask() {
             description: description.current.value,
             status: status.current.value
         }
-        console.log(newTask)
+        // console.log(newTask)
+        try {
+            await addTask(newTask)
+            alert("la task è stata creata")
+            setTitle("")
+            description.current.value = ""
+            status.current.value = "To do"
+        } catch (error) {
+            console.log(error)
+            alert(" errore")
+        }
     }
 
 
