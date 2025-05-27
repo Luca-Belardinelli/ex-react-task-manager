@@ -6,7 +6,7 @@ const api = import.meta.env.VITE_API;
 
 export default function useTasks() {
 
-    // stato per gestire i data
+    // stato per gestire l'elenco dei task
     const [tasks, setTasks] = useState([]);
 
     // chiamata api
@@ -17,9 +17,10 @@ export default function useTasks() {
             try {
                 const responseApi = await fetch(`${api}/tasks`)
                 data = await responseApi.json();
-                // Gestione degli errori durante la chiamata API
+                // Aggiorno lo stato con i task ricevuti
                 setTasks(data)
             } catch (error) {
+                // Gestione degli errori durante la chiamata API
                 console.error("Errore")
             }
         })();
@@ -35,16 +36,17 @@ export default function useTasks() {
             },
             body: JSON.stringify(newTask)
         });
-
+        // Estraggo i dati dalla risposta
         const { success, message, task } = await response.json();
         console.log(response, message, success)
-
+        // Se l'API restituisce un errore
         if (!success) throw new Error(message)
-
+        // Aggiungo il nuovo task allo stato attuale
         setTasks(prev => [...prev, task])
 
     };
 
+    // Funzione per rimuovere un task dato il suo ID
     const removeTask = async (taskId) => {
         const response = await fetch(`${api}/tasks/${taskId}`, {
             method: "DELETE",
@@ -53,7 +55,7 @@ export default function useTasks() {
         const { success, message } = await response.json();
 
         if (!success) throw new Error(message)
-
+        // Rimuovo il task corrispondente dallo stato
         setTasks(prev => prev.filter(task => task.id !== taskId))
     };
 

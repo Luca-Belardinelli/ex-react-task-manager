@@ -1,10 +1,9 @@
+// Importo gli hook
 import { useState, useRef, useMemo } from "react";
 
-
+// Importo il context globale che contiene la funzione `addTask`
 import { GlobalContext } from "../contexts/CountContext";
-
 import { useContext } from "react";
-
 
 
 // Costanti per la validazione dei campi
@@ -19,17 +18,20 @@ function AddTask() {
     const description = useRef();
     const status = useRef();
 
+    // Accedo alla funzione `addTask` dal context globale
     const { addTask } = useContext(GlobalContext)
 
     // validazione titolo
     const notValidTitle = useMemo(() => {
+        // Controllo se il titolo è vuoto o contiene solo spazi
         if (!title.trim()) {
             return "Errore : Il titolo non può essere vuoto"
         }
-
+        // Controllo se il titolo contiene simboli speciali
         if ([...title].some(c => symbols.includes(c))) {
             return "Errore : Il titolo non può contenere caratteri speciali"
         }
+        // Se tutto è valido, non ritorna nulla
     }, [title])
 
 
@@ -37,7 +39,9 @@ function AddTask() {
     // funzione che gestisce l'invio del form
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // Se il titolo non è valido, interrompo il submit
         if (notValidTitle) return
+        // Creo il nuovo oggetto task con i valori del form
         const newTask = {
             title: title.trim(),
             description: description.current.value,
@@ -45,7 +49,9 @@ function AddTask() {
         }
         // console.log(newTask)
         try {
+            // Invio la nuova task tramite la funzione del context
             await addTask(newTask)
+            // resetto il form
             alert("la task è stata creata")
             setTitle("")
             description.current.value = ""
