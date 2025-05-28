@@ -1,15 +1,30 @@
 // Importo il contesto globale per accedere ai task
 import { GlobalContext } from "../contexts/CountContext"
 // Importo l'hook useContext 
-import { useContext, useState, useMemo } from "react"
+import { useContext, useState, useMemo, useCallback } from "react"
 // importo Task row
 import TaskRow from "../components/TaskRow"
+
+// funzione debounce generica
+function debounce(callback, delay) {
+    let timer;
+    return (value) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            callback(value);
+
+        }, delay)
+    }
+}
 
 
 function TaskList() {
     // Estraggo i task dal contesto globale usando destructuring
     const { tasks } = useContext(GlobalContext)
     console.log(tasks)
+
+    const [searchQuery, setSearchQuery] = useState('')
+    const debounceSearch = useCallback(debounce(setSearchQuery, 500), [])
 
     //stati per l'ordinamento
     const [sortBy, setSortBy] = useState('createdAt');
@@ -26,28 +41,41 @@ function TaskList() {
         }
     }
 
-    const sortedTask = useMemo(() => {
-        return [...tasks].sort((a, b) => {
-            let comparison;
-            if (sortBy === 'title') {
-                comparison = a.title.localeCompare(b.title)
-            } else if (sortBy === 'status') {
-                const statusOptions = ['To do', "Doing", "Done"];
-                comparison = statusOptions.indexOf(a.status) - statusOptions.indexOf(b.status)
-            } else if (sortBy === 'createdAt') {
-                const dateA = new Date(a.createdAt).getTime();
-                const dateB = new Date(b.createdAt).getTime();
-                comparison = dateA - dateB;
-            }
-            return comparison * sortOrder;
-        })
+    const filteredAndSortedTask = useMemo(() => {
 
-    }, [tasks, sortBy, sortOrder])
+        return [...tasks]
+            .filter(t => t.title.toLowerCase().includes(searchQuery.toLowerCase()))
+            .sort((a, b) => {
+                let comparison;
+
+                if (sortBy === 'title') {
+                    comparison = a.title.localeCompare(b.title)
+                } else if (sortBy === 'status') {
+                    const statusOptions = ['To do', "Doing", "Done"];
+                    comparison = statusOptions.indexOf(a.status) - statusOptions.indexOf(b.status)
+                } else if (sortBy === 'createdAt') {
+                    const dateA = new Date(a.createdAt).getTime();
+                    const dateB = new Date(b.createdAt).getTime();
+                    comparison = dateA - dateB;
+                }
+                return comparison * sortOrder;
+            })
+
+    }, [tasks, sortBy, sortOrder, searchQuery])
 
 
     return (
         <div className="task_list_container">
             <h1>Lista Task</h1>
+
+            {/* input di ricerca */}
+            <input
+                type="text"
+                placeholder="text"
+                onChange={e => debounceSearch(e.target.value)}
+            />
+
+
             <table>
                 <thead>
                     <tr>
@@ -58,7 +86,7 @@ function TaskList() {
                 </thead>
                 <tbody>
                     {
-                        sortedTask.map(task =>
+                        filteredAndSortedTask.map(task =>
                             <TaskRow key={task.id} task={task} />
                         )
                     }
