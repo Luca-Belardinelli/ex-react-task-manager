@@ -41,26 +41,34 @@ function TaskList() {
         }
     }
 
+    // Memoizzazione della lista filtrata e ordinata delle task
     const filteredAndSortedTask = useMemo(() => {
-
+        //Copia l'array originale per evitare mutazioni
         return [...tasks]
+            //Filtra le task in base al valore di ricerca
             .filter(t => t.title.toLowerCase().includes(searchQuery.toLowerCase()))
+            // Ordina le task in base al criterio selezionato
             .sort((a, b) => {
                 let comparison;
 
                 if (sortBy === 'title') {
+                    // Confronta alfabeticamente i titoli
                     comparison = a.title.localeCompare(b.title)
                 } else if (sortBy === 'status') {
+                    // Ordina in base all'ordine logico dello stato
                     const statusOptions = ['To do', "Doing", "Done"];
                     comparison = statusOptions.indexOf(a.status) - statusOptions.indexOf(b.status)
                 } else if (sortBy === 'createdAt') {
+                    // Ordina in base alla data di creazione
                     const dateA = new Date(a.createdAt).getTime();
                     const dateB = new Date(b.createdAt).getTime();
                     comparison = dateA - dateB;
                 }
+                // Applica l'ordinamento crescente o decrescente in base a sortOrder
                 return comparison * sortOrder;
             })
 
+        // Questa funzione viene ricalcolata solo se uno di questi valori cambia
     }, [tasks, sortBy, sortOrder, searchQuery])
 
 
